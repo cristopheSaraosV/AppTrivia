@@ -41,7 +41,7 @@ function insertarPregunta(pregunta, respuesta) {
     console.log(respuesta);
 
     const modalPre = document.createElement('div'); // aqui se genera el modal
-    modalPre.classList = 'container col s6'
+    modalPre.classList = 'container col s4'
     modalPre.innerHTML = `
     <a class="waves-effect waves-light btn modal-trigger" href="#modal1">PREGUNTA</a>
   
@@ -53,6 +53,7 @@ function insertarPregunta(pregunta, respuesta) {
                 <p>${respuesta}</p>
             </div>
         </div> 
+     
     `;
     const contenedor = document.createElement('div'); // aqui se genera el modal
 
