@@ -1,72 +1,89 @@
 //  ------------------ variables      -------------------
-const cantidadPre = document.getElementById('nPreguntas');  
-const botonGenerar = document.getElementById('botonGenerar');
-const ContenedorFormulario = document.getElementById('Formulario'); // contenedor del formulario de ingresar preguntas
+const textPregunta = document.getElementById('textPregunta');
+const textRespuesta = document.getElementById('textRespuesta');
+const btnGuardar = document.getElementById('btnGuardar');
+const btnVolver = document.getElementById('btnVolver');
+const formulario = document.getElementById('formulario');
+const modalJuego = document.getElementById('modalJuego');
 //  ------------------ Event Listeners ------------------
-EventListeners();
-function EventListeners(){
 
-    botonGenerar.addEventListener('click',generarFormulario);
+EventListeners();
+
+function EventListeners() {
+    btnGuardar.addEventListener('click', guardarPregunta);
+    inicioApp();
+    textPregunta.addEventListener('blur', validarCampo);
+    textRespuesta.addEventListener('blur', validarCampo);
 
 }
 
 
 //  ------------------ Funciones ------------------------
-function generarFormulario(e){
-    botonGenerar.disabled=true;
+function inicioApp() {
+    btnGuardar.disabled = true;
+    btnVolver.disabled = true;
 
-        const formulario= document.createElement('div');
-        formulario.innerHTML=
-            `
-            <div class="col s12">
-            <div class="container">
-                <div class="row">
-                    <div class="col s12">
-                        <h5>N°</h5>
-                    </div>
-                    <div class="col s12">
-                        <br>
-                        <div class="input-field col s12 m10">
-                            <input id="PREGUNTA" type="text" class="validate">
-                            <label for="PREGUNTA">PREGUNTA</label>
-                        </div>
-                    </div>
-                    <div class="col s12">
-                        <br>
-                        <div class="input-field col s12 m10">
-                            <input id="RESPUESTA" type="text" class="validate">
-                            <label for="RESPUESTA">RESPUESTA</label>
-                        </div>
-                        <div class="input-field col s12 m2">
-                            <a type="submit" id="botonInsertar" class="waves-effect waves-light btn  blue darken-3"><i class="material-icons left">send</i>CONTINUAR</a>
-                        </div>
-                    </div>
-                    <div class="col s12"></div>
-                </div>
+}
+
+function guardarPregunta(e) {
+    let pregunta = textPregunta.value;
+    let respuesta = textRespuesta.value;
+    e.preventDefault();
+    limpiarFormulario();
+    insertarPregunta(pregunta, respuesta);
+}
+
+
+
+
+function insertarPregunta(pregunta, respuesta) {
+
+    console.log(respuesta);
+
+    const modalPre = document.createElement('div'); // aqui se genera el modal
+    modalPre.classList = 'container col s6'
+    modalPre.innerHTML = `
+    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">PREGUNTA</a>
+  
+    <!-- Modal Structure -->
+  
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <h4>${pregunta}</h4>
+                <p>${respuesta}</p>
             </div>
-            </div>
-            `
-        ;
-        ContenedorFormulario.appendChild(formulario);
-        const botonInsertar = document.getElementById('botonInsertar');
+        </div> 
+    `;
+    const contenedor = document.createElement('div'); // aqui se genera el modal
 
-        let cantidadP = obtenerCantidadPregunta(e)
-        botonInsertar.addEventListener('click',insentar);
-
+    contenedor.appendChild(modalPre);
+    modalJuego.appendChild(contenedor);
 }
 
 
-function obtenerCantidadPregunta(e){ // se obtiene la cantidad de preguntas a generar
-    e.preventDefault();    
-    console.log(cantidadPre.value);
+
+
+// limpiarFormulario()
+function limpiarFormulario(e) {
+    formulario.reset();
 
 }
 
-function insentar(){
-    let matriz=[];
-    let pregunta= document.getElementById('PREGUNTA').value;
-    matriz.push(pregunta);
-    console.log(matriz);
+// valida que el campo tenga algo escrito
+function validarCampo() {
+    // validar longitud del campo y que no este vacia
+    validarBtn(this);
 
 }
+
+function validarBtn(campo) {
+    if (textPregunta.value !== '' && textRespuesta.value !== '') {
+        btnGuardar.disabled = false;
+        btnVolver.disabled = false;
+    }
+}
+
+
+
+
 

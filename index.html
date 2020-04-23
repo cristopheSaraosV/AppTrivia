@@ -17,7 +17,7 @@
 
 <body>
     <div class="navbar-fixed">
-        <nav class="blue darken-3">
+        <nav class="light-green">
             <div class="nav-wrapper">
                 <a href="#!" class="brand-logo center">TRIVIA</a>
             </div>
@@ -29,7 +29,7 @@
         <h5 class="container">
             <blockquote>
                 <strong>
-                    INGRESE LAS CANTIDADES DE PREGUNTAS PARA GENERAR EL JUEGO
+                    INGRESE LA PREGUNTA PARA GENERAR EL JUEGO
                 </strong>
             </blockquote>
         </h5>
@@ -39,28 +39,50 @@
     <div class="row">
         <div class="col s12">
             <div class="container">
-                <form action="#" id="formularioGenerar">               
-                    <br>
-                    <div class="input-field col s12 m10">
-                        <input id="nPreguntas" type="number" class="validate">
-                        <label for="nPreguntas">CANTIDAD PREGUNTA</label>
+                <div class="row">
+                    <div class="col s12">
+                        <h5>N°</h5>
                     </div>
-                    <div class="input-field col s12 m2">
-                        <button type="submit" id="botonGenerar" class="waves-effect waves-light btn  grey darken-3"><i class="material-icons left">send</i>Generar</button>
-                    </div>
-                </form>
+                    <form id="formulario" action="#">
+                        <div class="col s12">
+                            <br>
+                            <div class="input-field col s12 m12">
+                                <input id="textPregunta" type="text" class="validate">
+                                <label for="textPregunta">PREGUNTA</label>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <br>
+                            <div class="input-field col s12 m12">
+                                <input id="textRespuesta" type="text" class="validate">
+                                <label for="textRespuesta">RESPUESTA</label>
+                            </div>
+                            <div class="input-field col s6 m6 center-align">
+                                <button type="submit" id="btnGuardar"
+                                    class="waves-effect waves-light btn light-green btn-large"><i
+                                        class="material-icons left">send</i>CONTINUAR</button>
+                            </div>
+                            <div class="input-field col s6 m6 center-align">
+                                <button type="button" id="btnVolver"
+                                    class="waves-effect waves-light btn red darken-3 btn-large"><i
+                                        class="material-icons left">send</i>VOLVER
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        
-        <div id="Formulario" class="col s12">
+        <div id="modalJuego" class="col s12 container center">
 
         </div>
-      
+
     </div>
 
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/iniciarMaterialize.js"></script>
 </body>
 
 </html>
