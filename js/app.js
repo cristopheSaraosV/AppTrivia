@@ -2,7 +2,7 @@
 const textPregunta = document.getElementById('textPregunta');
 const textRespuesta = document.getElementById('textRespuesta');
 const btnGuardar = document.getElementById('btnGuardar');
-const btnVolver = document.getElementById('btnVolver');
+const reset = document.getElementById('reset');
 const formulario = document.getElementById('formulario');
 const modalJuego = document.getElementById('modalJuego');
 //  ------------------ Event Listeners ------------------
@@ -11,7 +11,7 @@ EventListeners();
 
 function EventListeners() {
 
-    btnGuardar.addEventListener('click', guardarPregunta);
+    btnGuardar.addEventListener('click',leerDatos );
     desactirEnlaces();
     textPregunta.addEventListener('blur', validarCampo);
     textRespuesta.addEventListener('blur', validarCampo);
@@ -20,22 +20,70 @@ function EventListeners() {
 
 
 //  ------------------ Funciones ------------------------
+
+
+function leerDatos(){
+    const Lista={
+        pregunta:textPregunta.value,
+        respuesta:textRespuesta.value
+    };
+    insertarPregunta(textRespuesta.value,textPregunta.value);
+    InsertarLocal(Lista);
+}
+
+function InsertarLocal(pregunta){
+    let preguntas;
+    preguntas=obtenerPreguntaLocalS();
+    preguntas.push(pregunta);
+    localStorage.setItem('Lista',JSON.stringify(preguntas));
+    limpiarFormulario();
+}
+
+function obtenerPreguntaLocalS(){
+    let preguntasLS
+
+    // comprobar si hay algo en localStorage
+
+    if(localStorage.getItem('Lista') === null){
+        preguntasLS =[];
+    }else{
+        preguntasLS = JSON.parse(localStorage.getItem('Lista'));
+    }
+
+    return preguntasLS;
+}
+
+
+
+
 function desactirEnlaces() {
     btnGuardar.disabled = true;
-    btnVolver.disabled = true;
+    reset.disabled = true;
 
 }
 function AutoFocusPregunta(){
     textPregunta.focus();
 }
 
-function guardarPregunta(e) {
-    let pregunta = textPregunta.value;
-    let respuesta = textRespuesta.value;
-    e.preventDefault();
-    insertarPregunta(pregunta, respuesta);
-    limpiarFormulario();
-    AutoFocusPregunta();
+// limpiarFormulario()
+function limpiarFormulario(e) {
+    textPregunta.value="";
+    textRespuesta.value="";
+    desactirEnlaces();
+}
+
+// valida que el campo tenga algo escrito
+function validarCampo() {
+    // validar longitud del campo y que no este vacia
+    validarBtn(this);
+
+}
+
+function validarBtn(campo) {
+    if (textPregunta.value !== '' && textRespuesta.value !== '') {
+        btnGuardar.disabled = false;
+        reset.disabled = false;
+    }
 }
 
 
@@ -46,7 +94,7 @@ function insertarPregunta(pregunta, respuesta) {
     console.log(respuesta);
 
     const modalPre = document.createElement('div'); // aqui se genera el modal
-    modalPre.classList = 'container col s12 m3'
+    modalPre.classList = 'container col s12 m4'
     modalPre.innerHTML = `
     <div class="card container  ">
     <br/>
@@ -68,31 +116,3 @@ function insertarPregunta(pregunta, respuesta) {
     contenedor.appendChild(modalPre);
     modalJuego.appendChild(contenedor);
 }
-
-
-
-
-// limpiarFormulario()
-function limpiarFormulario(e) {
-    formulario.reset();
-    desactirEnlaces();
-}
-
-// valida que el campo tenga algo escrito
-function validarCampo() {
-    // validar longitud del campo y que no este vacia
-    validarBtn(this);
-
-}
-
-function validarBtn(campo) {
-    if (textPregunta.value !== '' && textRespuesta.value !== '') {
-        btnGuardar.disabled = false;
-        btnVolver.disabled = false;
-    }
-}
-
-
-
-
-
