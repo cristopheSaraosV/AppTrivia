@@ -105,23 +105,26 @@ function obtenerPreguntaLocalS() {
 function insertarPregunta(pregunta, respuesta) {
     var preguntasLs;
     preguntasLs = obtenerPreguntaLocalS();
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-       <td>
-        ${pregunta.pregunta}     
-    </td>
-    <td >
-    <input class="form-control" type="password" name="password" id="password">
 
-       ${pregunta.respuesta}     
+    preguntasLs.forEach(pregunta => {
+        // construir el template
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+        <td>
+         ${pregunta.pregunta}     
+     </td>
+     <td>
+         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn ">Mostrar</a>
+         </> 
+     </td>
+     <td>
+     ${pregunta.respuesta}     
+
+     </td>
     
-    </td>
-    <td>
-        <a href="#"" class="borrar-curso" data-id="${pregunta.id}"><a class="waves-effect waves-light btn ">Mostrar</a>
-        </> 
-    </td>
-    `
-    trInsert.appendChild(tr);
+     `
+        trInsert.appendChild(tr);
+    });
 }
 
 
