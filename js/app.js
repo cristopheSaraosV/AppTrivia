@@ -2,19 +2,27 @@
 const textPregunta = document.getElementById('textPregunta');
 const textRespuesta = document.getElementById('textRespuesta');
 const btnGuardar = document.getElementById('btnGuardar');
-const reset = document.getElementById('reset');
+const btnReset = document.getElementById('reset');
 const formulario = document.getElementById('formulario');
 const trInsert = document.getElementById('trInsert');
+const Juego = document.getElementById('Juego');
+const JuegoCont= document.getElementById('JuegoCont');
+
 //  ------------------ Event Listeners ------------------
 
 EventListeners();
 
 function EventListeners() {
 
-    btnGuardar.addEventListener('click',leerDatos );
+
+    btnGuardar.addEventListener('click', leerDatos);
     desactirEnlaces();
     textPregunta.addEventListener('blur', validarCampo);
     textRespuesta.addEventListener('blur', validarCampo);
+    btnReset.addEventListener('click', borrarLocalStorage);
+    document.addEventListener('DOMContentLoaded', leerLocalStorage); // se ejecuta una vez cargado todo el documento
+    Juego.addEventListener('click',generarTabla);    
+
 
 }
 
@@ -22,54 +30,124 @@ function EventListeners() {
 //  ------------------ Funciones ------------------------
 
 
-function leerDatos(e){
-    e.preventDefault();
-    const Lista={
-        pregunta:textPregunta.value,
-        respuesta:textRespuesta.value
-    };
-    insertarPregunta(textRespuesta.value,textPregunta.value);
-    InsertarLocal(Lista);
-}
 
-function InsertarLocal(pregunta){
+
+// Traer y imprimir todo los recursos del localHost
+function leerLocalStorage() {
+    var preguntasLs;
+    preguntasLs = obtenerPreguntaLocalS();
+
+    preguntasLs.forEach(pregunta => {
+        // construir el template
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+        <td>
+         ${pregunta.pregunta}     
+     </td>
+     <td>
+         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn ">Mostrar</a>
+         </> 
+     </td>
+     <td>
+     ${pregunta.respuesta}     
+
+     </td>
+    
+     `
+        trInsert.appendChild(tr);
+    });
+
+};
+
+function generarTabla(){
+    JuegoCont.hidden=false;
+
+};
+
+
+
+// obtener Datos de los formularios
+function leerDatos(e) {
+    e.preventDefault();
+    const Lista = {
+        pregunta: textPregunta.value,
+        respuesta: textRespuesta.value
+    };
+    insertarPregunta(textRespuesta.value, textPregunta.value);
+    InsertarLocal(Lista);
+};
+
+// Inserta las pregunta en el localHost
+function InsertarLocal(pregunta) {
     let preguntas;
-    preguntas=obtenerPreguntaLocalS();
+    preguntas = obtenerPreguntaLocalS();
     preguntas.push(pregunta);
-    localStorage.setItem('Lista',JSON.stringify(preguntas));
+    localStorage.setItem('Lista', JSON.stringify(preguntas));
     limpiarFormulario();
 }
 
-function obtenerPreguntaLocalS(){
+// Obtiene las pregunta del localHost
+function obtenerPreguntaLocalS() {
     let preguntasLS
 
     // comprobar si hay algo en localStorage
 
-    if(localStorage.getItem('Lista') === null){
-        preguntasLS =[];
-    }else{
+    if (localStorage.getItem('Lista') === null) {
+        preguntasLS = [];
+    } else {
         preguntasLS = JSON.parse(localStorage.getItem('Lista'));
     }
 
     return preguntasLS;
 }
 
+// Se insertar en el dom la pregunta
+function insertarPregunta(pregunta, respuesta) {
+    var preguntasLs;
+    preguntasLs = obtenerPreguntaLocalS();
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+       <td>
+        ${pregunta.pregunta}     
+    </td>
+    <td >
+    <input class="form-control" type="password" name="password" id="password">
+
+       ${pregunta.respuesta}     
+    
+    </td>
+    <td>
+        <a href="#"" class="borrar-curso" data-id="${pregunta.id}"><a class="waves-effect waves-light btn ">Mostrar</a>
+        </> 
+    </td>
+    `
+    trInsert.appendChild(tr);
+}
 
 
 
+
+
+
+// borrar Datos
+function borrarLocalStorage() {
+    localStorage.clear();
+    location.reload();
+}
+
+// deesactiva los botones
 function desactirEnlaces() {
     btnGuardar.disabled = true;
-    reset.disabled = true;
 
 }
-function AutoFocusPregunta(){
+function AutoFocusPregunta() {
     textPregunta.focus();
 }
 
 // limpiarFormulario()
 function limpiarFormulario(e) {
-    textPregunta.value="";
-    textRespuesta.value="";
+    textPregunta.value = "";
+    textRespuesta.value = "";
     desactirEnlaces();
 }
 
@@ -83,31 +161,5 @@ function validarCampo() {
 function validarBtn(campo) {
     if (textPregunta.value !== '' && textRespuesta.value !== '') {
         btnGuardar.disabled = false;
-        reset.disabled = false;
     }
-}
-
-
-
-
-function insertarPregunta(pregunta, respuesta) {
-
-    console.log(respuesta);
-
-    const tdPregunta = document.createElement('td'); // aqui se genera el tabla
-    tdPregunta.innerHTML = `
-    <td>${pregunta}</td>
-     `;
-
-    const tdRespuesta = document.createElement('td'); // aqui se genera el tabla
-    tdRespuesta.innerHTML = `
-    <td>${respuesta}</td>
-    `;
-
-    
-    const tr = document.createElement('tr'); // aqui se genera el modal
-    
-    tr.appendChild(tdPregunta);
-    tr.appendChild(tdRespuesta);
-    trInsert.appendChild(tr)
 }
