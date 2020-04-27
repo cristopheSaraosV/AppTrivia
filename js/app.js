@@ -4,7 +4,7 @@ const textRespuesta = document.getElementById('textRespuesta');
 const btnGuardar = document.getElementById('btnGuardar');
 const reset = document.getElementById('reset');
 const formulario = document.getElementById('formulario');
-const modalJuego = document.getElementById('modalJuego');
+const trInsert = document.getElementById('trInsert');
 //  ------------------ Event Listeners ------------------
 
 EventListeners();
@@ -22,7 +22,8 @@ function EventListeners() {
 //  ------------------ Funciones ------------------------
 
 
-function leerDatos(){
+function leerDatos(e){
+    e.preventDefault();
     const Lista={
         pregunta:textPregunta.value,
         respuesta:textRespuesta.value
@@ -93,26 +94,20 @@ function insertarPregunta(pregunta, respuesta) {
 
     console.log(respuesta);
 
-    const modalPre = document.createElement('div'); // aqui se genera el modal
-    modalPre.classList = 'container col s12 m4'
-    modalPre.innerHTML = `
-    <div class="card container  ">
-    <br/>
-    <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator responsive-img" src="img/question.svg">
-    </div>
-    <div class="card-content">
-      <span class="card-title activator grey-text text-darken-4"><strong>${pregunta}</strong><i class="material-icons right">more_vert</i></span>
-    </div>
-    <div class="card-reveal">
-      <span class="card-title grey-text text-darken-4"><strong>${pregunta}</strong><i class="material-icons right">close</i></span>
-      <p>${respuesta}</p>
-    </div>
-  </div>
-           
-    `;
-    const contenedor = document.createElement('div'); // aqui se genera el modal
+    const tdPregunta = document.createElement('td'); // aqui se genera el tabla
+    tdPregunta.innerHTML = `
+    <td>${pregunta}</td>
+     `;
 
-    contenedor.appendChild(modalPre);
-    modalJuego.appendChild(contenedor);
+    const tdRespuesta = document.createElement('td'); // aqui se genera el tabla
+    tdRespuesta.innerHTML = `
+    <td>${respuesta}</td>
+    `;
+
+    
+    const tr = document.createElement('tr'); // aqui se genera el modal
+    
+    tr.appendChild(tdPregunta);
+    tr.appendChild(tdRespuesta);
+    trInsert.appendChild(tr)
 }
