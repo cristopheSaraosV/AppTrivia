@@ -1,12 +1,9 @@
 //  ------------------ variables      -------------------
-const textPregunta = document.getElementById('textPregunta');
-const textRespuesta = document.getElementById('textRespuesta');
+const textNota = document.getElementById('textNota');
 const btnGuardar = document.getElementById('btnGuardar');
 const btnReset = document.getElementById('reset');
 const formulario = document.getElementById('formulario');
 const trInsert = document.getElementById('trInsert');
-const Juego = document.getElementById('Juego');
-const JuegoCont= document.getElementById('JuegoCont');
 
 //  ------------------ Event Listeners ------------------
 
@@ -16,12 +13,8 @@ function EventListeners() {
 
 
     btnGuardar.addEventListener('click', leerDatos);
-    desactirEnlaces();
-    textPregunta.addEventListener('blur', validarCampo);
-    textRespuesta.addEventListener('blur', validarCampo);
     btnReset.addEventListener('click', borrarLocalStorage);
     document.addEventListener('DOMContentLoaded', leerLocalStorage); // se ejecuta una vez cargado todo el documento
-    Juego.addEventListener('click',generarTabla);    
 
 
 }
@@ -34,23 +27,23 @@ function EventListeners() {
 
 // Traer y imprimir todo los recursos del localHost
 function leerLocalStorage() {
-    var preguntasLs;
-    preguntasLs = obtenerPreguntaLocalS();
+    var notasLS;
+    notasLS = obtenerPreguntaLocalS();
 
-    preguntasLs.forEach(pregunta => {
+    notasLS.forEach(nota => {
         // construir el template
         const tr = document.createElement('tr');
         tr.innerHTML = `
         <td>
-         ${pregunta.pregunta}     
+         ${nota.nota}     
      </td>
      <td>
-         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn ">Mostrar</a>
+         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4  ">Editar</a>
          </> 
      </td>
      <td>
-     ${pregunta.respuesta}     
-
+     <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4 ">Borrar</a>
+     </> 
      </td>
     
      `
@@ -59,70 +52,76 @@ function leerLocalStorage() {
 
 };
 
-function generarTabla(){
-    JuegoCont.hidden=false;
-
-};
 
 
 
 // obtener Datos de los formularios
 function leerDatos(e) {
     e.preventDefault();
-    const Lista = {
-        pregunta: textPregunta.value,
-        respuesta: textRespuesta.value
-    };
-    insertarPregunta(textRespuesta.value, textPregunta.value);
-    InsertarLocal(Lista);
+    if(textNota.value.length>0){
+        const Lista = {
+            nota: textNota.value,
+        };
+        M.toast({html: 'Se registro correctamente', classes: 'rounded'});
+
+        insertarNota(textNota.value);
+        InsertarLocal(Lista);
+       
+    }
+    else{
+        var toastHTML = '<span>No puedes guardar un campo vacio</span>';
+        M.toast({html: toastHTML});
+              
+    }
+   
 };
 
 // Inserta las pregunta en el localHost
-function InsertarLocal(pregunta) {
-    let preguntas;
-    preguntas = obtenerPreguntaLocalS();
-    preguntas.push(pregunta);
-    localStorage.setItem('Lista', JSON.stringify(preguntas));
+function InsertarLocal(nota) {
+    let notas;
+    notas = obtenerPreguntaLocalS();
+    notas.push(nota);
+    localStorage.setItem('Lista', JSON.stringify(notas));
     limpiarFormulario();
 }
 
 // Obtiene las pregunta del localHost
 function obtenerPreguntaLocalS() {
-    let preguntasLS
+    let notasLS
 
     // comprobar si hay algo en localStorage
 
     if (localStorage.getItem('Lista') === null) {
-        preguntasLS = [];
+        notasLS = [];
     } else {
-        preguntasLS = JSON.parse(localStorage.getItem('Lista'));
+        notasLS = JSON.parse(localStorage.getItem('Lista'));
     }
 
-    return preguntasLS;
+    return notasLS;
 }
 
 // Se insertar en el dom la pregunta
-function insertarPregunta(pregunta, respuesta) {
-    var preguntasLs;
-    preguntasLs = obtenerPreguntaLocalS();
-  
-        // construir el template
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+function insertarNota(nota) {
+    var notasLs;
+    notasLs = obtenerPreguntaLocalS();
+
+    // construir el template
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
         <td>
-         ${pregunta}     
+         ${nota}     
      </td>
      <td>
-         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn ">Mostrar</a>
+         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4">Editar</a>
          </> 
      </td>
      <td>
-     ${respuesta}     
-
+     <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4">Borrar</a>
+     </> 
      </td>
     
      `
-        trInsert.appendChild(tr);
+    trInsert.appendChild(tr);
 }
 
 
@@ -133,34 +132,23 @@ function insertarPregunta(pregunta, respuesta) {
 // borrar Datos
 function borrarLocalStorage() {
     localStorage.clear();
+    M.toast({html: 'Limpieza correcta', classes: 'rounded'});
+    window.setTimeout(Recargar,2000);
+
+    ;
+
+}
+
+function Recargar(){
     location.reload();
 }
 
-// deesactiva los botones
-function desactirEnlaces() {
-    btnGuardar.disabled = true;
-
-}
 function AutoFocusPregunta() {
     textPregunta.focus();
 }
 
 // limpiarFormulario()
 function limpiarFormulario(e) {
-    textPregunta.value = "";
-    textRespuesta.value = "";
-    desactirEnlaces();
+    textNota.value = "";
 }
 
-// valida que el campo tenga algo escrito
-function validarCampo() {
-    // validar longitud del campo y que no este vacia
-    validarBtn(this);
-
-}
-
-function validarBtn(campo) {
-    if (textPregunta.value !== '' && textRespuesta.value !== '') {
-        btnGuardar.disabled = false;
-    }
-}
