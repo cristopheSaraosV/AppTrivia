@@ -4,7 +4,6 @@ const btnGuardar = document.getElementById('btnGuardar');
 const btnReset = document.getElementById('reset');
 const formulario = document.getElementById('formulario');
 const trInsert = document.getElementById('trInsert');
-
 //  ------------------ Event Listeners ------------------
 
 EventListeners();
@@ -23,7 +22,10 @@ function EventListeners() {
 //  ------------------ Funciones ------------------------
 
 
+function EliminarNota(e){
+    console.log(e.id);
 
+}
 
 // Traer y imprimir todo los recursos del localHost
 function leerLocalStorage() {
@@ -38,11 +40,11 @@ function leerLocalStorage() {
        ${nota.nota}     
      </td>
      <td>
-         <a href="#"" data-id="${nota.indice}" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4  ">Editar</a>
+         <a href="#""  class="editar-curso"><a id="${nota.indice}" class="waves-effect waves-light btn amber darken-4  ">Editar</a>
          </$> 
      </td>
      <td>
-     <a href="#"" data-id="${nota.indice}" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4 ">Borrar</a>
+     <a href="#""  class="borrar-curso"><a  id="${nota.indice}" onclick="EliminarNota(this)" class="waves-effect waves-light btn  red darken-4 ">Borrar</a>
      </> 
      </td>
     
@@ -118,11 +120,11 @@ function insertarNota(nota,indice) {
          ${nota}     
      </td>
      <td>
-         <a href="#"" data-id="${indice}" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4">Editar</a>
+         <a href="#""  class="borrar-curso"><a id="${indice}" class="waves-effect waves-light btn amber darken-4">Editar</a>
          </> 
      </td>
      <td>
-     <a href="#"" data-id="${indice}" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4">Borrar</a>
+     <a href="#"" class="borrar-curso"><a id="${indice}"  onclick="EliminarNota(this)" class="waves-effect waves-light btn  red darken-4">Borrar</a>
      </> 
      </td>
     
