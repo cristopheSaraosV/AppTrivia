@@ -35,14 +35,14 @@ function leerLocalStorage() {
         const tr = document.createElement('tr');
         tr.innerHTML = `
         <td>
-         ${nota.nota}     
+       ${nota.nota}     
      </td>
      <td>
-         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4  ">Editar</a>
-         </> 
+         <a href="#"" data-id="${nota.indice}" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4  ">Editar</a>
+         </$> 
      </td>
      <td>
-     <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4 ">Borrar</a>
+     <a href="#"" data-id="${nota.indice}" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4 ">Borrar</a>
      </> 
      </td>
     
@@ -52,19 +52,25 @@ function leerLocalStorage() {
 
 };
 
-
+function ObtenerPosicionLS(){
+    let notasLs = obtenerPreguntaLocalS();
+    let GenerarIndice=notasLs.length+1;
+    return GenerarIndice
+}
 
 
 // obtener Datos de los formularios
 function leerDatos(e) {
     e.preventDefault();
+    let indice=ObtenerPosicionLS();
     if(textNota.value.length>0){
         const Lista = {
             nota: textNota.value,
+            indice:indice
         };
         M.toast({html: 'Se registro correctamente', classes: 'rounded'});
 
-        insertarNota(textNota.value);
+        insertarNota(textNota.value,indice);
         InsertarLocal(Lista);
        
     }
@@ -101,7 +107,7 @@ function obtenerPreguntaLocalS() {
 }
 
 // Se insertar en el dom la pregunta
-function insertarNota(nota) {
+function insertarNota(nota,indice) {
     var notasLs;
     notasLs = obtenerPreguntaLocalS();
 
@@ -112,11 +118,11 @@ function insertarNota(nota) {
          ${nota}     
      </td>
      <td>
-         <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4">Editar</a>
+         <a href="#"" data-id="${indice}" class="borrar-curso"><a class="waves-effect waves-light btn amber darken-4">Editar</a>
          </> 
      </td>
      <td>
-     <a href="#"" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4">Borrar</a>
+     <a href="#"" data-id="${indice}" class="borrar-curso"><a class="waves-effect waves-light btn  red darken-4">Borrar</a>
      </> 
      </td>
     
@@ -151,4 +157,3 @@ function AutoFocusPregunta() {
 function limpiarFormulario(e) {
     textNota.value = "";
 }
-
