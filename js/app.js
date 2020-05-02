@@ -23,9 +23,38 @@ function EventListeners() {
 
 
 function EliminarNota(e){
-    console.log(e.id);
+    let elemento = e.parentElement.parentElement;
+    elemento.remove();
+    eliminarNotaLocalStorage(e.id);
+    console.log(e.index)
 
 }
+
+function eliminarNotaLocalStorage(nota) {
+ 
+    let cursosLS;
+ 
+ 
+    cursosLS = obtenerPreguntaLocalS()
+ 
+    cursosLS.forEach(function(cursoLS, index) {
+        
+  
+        if(cursoLS.indice-1===index){
+            console.log('correcto');
+            cursosLS.splice(index, 1)
+        }
+    
+    })
+ 
+    // con esto setteamos el localStorage ya sin el curso que removimos
+ 
+    localStorage.setItem('Lista', JSON.stringify(cursosLS)) 
+   
+ 
+}
+
+
 
 // Traer y imprimir todo los recursos del localHost
 function leerLocalStorage() {
@@ -142,9 +171,6 @@ function borrarLocalStorage() {
     localStorage.clear();
     M.toast({html: 'Limpieza correcta', classes: 'rounded'});
     window.setTimeout(Recargar,2000);
-
-    ;
-
 }
 
 function Recargar(){
@@ -156,6 +182,6 @@ function AutoFocusPregunta() {
 }
 
 // limpiarFormulario()
-function limpiarFormulario(e) {
+function limpiarFormulario() {
     textNota.value = "";
 }
